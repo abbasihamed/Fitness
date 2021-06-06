@@ -42,9 +42,9 @@ class _HomeScreenState extends State<HomeScreen> {
         unselectedItemColor: Colors.white,
         selectedItemColor: Colors.yellow,
         unselectedLabelStyle:
-            GoogleFonts.oswald(color: Colors.white, letterSpacing: 0.5),
+            const TextStyle(color: Colors.white, letterSpacing: 0.5),
         selectedLabelStyle:
-            GoogleFonts.oswald(color: Colors.yellowAccent, letterSpacing: 1),
+            const TextStyle(color: Colors.yellowAccent, letterSpacing: 1),
         selectedIconTheme: const IconThemeData(color: Colors.yellow, size: 30),
         items: const [
           BottomNavigationBarItem(

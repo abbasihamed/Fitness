@@ -198,6 +198,7 @@ class _TimerState extends State<Timer> with TickerProviderStateMixin {
                                   count.countDown();
                                   count.cancel = false;
                                   _animationController!.forward();
+                                  count.converter();
                                 }
                               }
                             },

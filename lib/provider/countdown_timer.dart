@@ -25,6 +25,10 @@ class CountDown extends ChangeNotifier {
     _convertSecond = ((hours * 3600) + (minutes * 60) + seconds + 0.0);
   }
 
+  void converter() {
+    _convertSecond = ((hours * 3600) + (minutes * 60) + seconds + 0.0);
+  }
+
   void countDown() {
     timeUp = false;
     Timer.periodic(const Duration(seconds: 1), (timer) {

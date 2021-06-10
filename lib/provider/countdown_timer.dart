@@ -13,12 +13,16 @@ class CountDown extends ChangeNotifier {
   double progressTick = 0;
   double _convertSecond = 0;
 
-  void stopTimer(){
-     seconds = 0;
-     minutes = 0;
-     hours = 0;
-     progressTick = 0;
-     _convertSecond = 0;
+  void stopTimer() {
+    seconds = 0;
+    minutes = 0;
+    hours = 0;
+    progressTick = 0;
+    _convertSecond = 0;
+  }
+
+  void converter() {
+    _convertSecond = ((hours * 3600) + (minutes * 60) + seconds + 0.0);
   }
 
   void countDown() {
@@ -75,12 +79,10 @@ class CountDown extends ChangeNotifier {
             seconds--;
           }
         }
-        progressTick =
-            (((hours * 3600) + (minutes * 60) + seconds + 0.0) / _convertSecond);
+        progressTick = (((hours * 3600) + (minutes * 60) + seconds + 0.0) /
+            _convertSecond);
       }
       notifyListeners();
     });
-
-    _convertSecond = ((hours * 3600) + (minutes * 60) + seconds + 0.0);
   }
 }

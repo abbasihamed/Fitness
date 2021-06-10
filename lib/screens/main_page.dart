@@ -1,67 +1,123 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:timer/widget/nav_items/stopwatch_item.dart';
-import 'package:timer/widget/nav_items/timer_item.dart';
+import 'package:timer/screens/bmi_page.dart';
+import 'package:timer/screens/stopwatch_item.dart';
+import 'package:timer/screens/timer_item.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 0;
-
-  List items = [
-    const StopWatch(),
-    const Timer(),
-  ];
-
-  @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.grey[850],
-      appBar: AppBar(
-        title: Text(
-          'فیتکده',
-          style: GoogleFonts.ptSerif(
-            color: Colors.yellow,
-            fontSize: 25,
+      body: Stack(
+        children: [
+          Container(
+            height: size.height,
+            width: size.width,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/image1.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
-        ),
-        backgroundColor: Colors.grey[900],
-        elevation: 5,
-      ),
-      body: items.elementAt(_currentIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.grey[850],
-        currentIndex: _currentIndex,
-        elevation: 5,
-        iconSize: 25,
-        unselectedItemColor: Colors.white,
-        selectedItemColor: Colors.yellow,
-        unselectedLabelStyle:
-            const TextStyle(color: Colors.white, letterSpacing: 0.5),
-        selectedLabelStyle:
-            const TextStyle(color: Colors.yellowAccent, letterSpacing: 1),
-        selectedIconTheme: const IconThemeData(color: Colors.yellow, size: 30),
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.access_time,
+          Container(
+            color: Colors.black54,
+          ),
+          Center(
+            // ignore: sized_box_for_whitespace
+            child: Container(
+              width: 500,
+              height: 500,
+              child: GridView.count(
+                crossAxisCount: 2,
+                crossAxisSpacing: 50,
+                mainAxisSpacing: 10,
+                childAspectRatio: 0.9,
+                padding: EdgeInsets.only(
+                    left: size.width * 0.1,
+                    right: size.width * 0.1,
+                    top: size.height * 0.1),
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Timer()));
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      decoration: const BoxDecoration(
+                        color: Colors.black54,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Image.asset(
+                        'assets/icons/timer.png',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const StopWatch()));
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(bottom: size.height * 0.015),
+                      alignment: Alignment.center,
+                      decoration: const BoxDecoration(
+                        color: Colors.black54,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Image.asset(
+                        'assets/icons/stopwatch.png',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    decoration: const BoxDecoration(
+                      color: Colors.black54,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text(
+                      'BMI',
+                      style: GoogleFonts.oswald(
+                          color: Colors.white70, fontSize: 40),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BmiScreens()));
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      decoration: const BoxDecoration(
+                        color: Colors.black54,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Text(
+                        'BMI',
+                        style: GoogleFonts.oswald(
+                            color: Colors.white70, fontSize: 40),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              label: 'کرونومتر'),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.access_alarm,
-              ),
-              label: 'زمان سنج'),
+            ),
+          )
         ],
-        onTap: (index) {
-          _currentIndex = index;
-          setState(() {});
-        },
       ),
     );
   }

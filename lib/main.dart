@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:timer/provider/bmi.dart';
+import 'package:timer/provider/bmi_and_rfm_calc.dart';
 import 'package:timer/provider/countdown_timer.dart';
 import 'package:timer/screens/main_page.dart';
 
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => CountDown()),
-        ChangeNotifierProvider(create: (context) => CalculateBMI()),
+        ChangeNotifierProvider(create: (context) => CalculateBMIAndRFM()),
       ],
       child: MaterialApp(
         theme: ThemeData(

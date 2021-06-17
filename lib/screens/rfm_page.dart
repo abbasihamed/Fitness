@@ -1,27 +1,30 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:timer/provider/bmi_and_rfm_calc.dart';
 import 'package:timer/widget/bmi/bmi_textfields.dart';
 import 'package:timer/widget/timers/timer_button.dart';
-import 'package:provider/provider.dart';
 
-class BmiScreens extends StatefulWidget {
-  const BmiScreens({Key? key}) : super(key: key);
+class RFMScreen extends StatefulWidget {
+  const RFMScreen({Key? key}) : super(key: key);
 
   @override
-  State<BmiScreens> createState() => _BmiScreensState();
+  State<RFMScreen> createState() => _RFMScreenState();
 }
 
-class _BmiScreensState extends State<BmiScreens> {
-  TextEditingController weightController = TextEditingController();
+class _RFMScreenState extends State<RFMScreen> {
   TextEditingController heightController = TextEditingController();
-  bool _opacity = false;
+  TextEditingController waistController = TextEditingController();
+
+  String radioGroup = 'gender';
+  int _value = 1;
   double _calOpacity = 0;
+  bool _opacity = false;
 
   @override
   Widget build(BuildContext context) {
-    final bmi = Provider.of<CalculateBMIAndRFM>(context);
+    final rfm = Provider.of<CalculateBMIAndRFM>(context);
     final size = MediaQuery.of(context).size;
+    print('build');
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -31,14 +34,14 @@ class _BmiScreensState extends State<BmiScreens> {
             FocusScope.of(context).requestFocus(FocusNode());
           },
           child: SingleChildScrollView(
-            // ignore: sized_box_for_whitespace
             child: Container(
-              width: size.width,
               height: size.height,
+              width: size.width,
               decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/images/image6.jpg'),
-                      fit: BoxFit.cover)),
+                image: DecorationImage(
+                    image: AssetImage('assets/images/image6.jpg'),
+                    fit: BoxFit.cover),
+              ),
               child: Container(
                 color: Colors.black54,
                 child: Column(
@@ -77,7 +80,7 @@ class _BmiScreensState extends State<BmiScreens> {
                                 color: Colors.white10,
                               ),
                               child: const Text(
-                                'شاخص حجم بدن (BMI) مقیاسی است که شما میتوانید متوجه شوید که آیا دچار کمبود وزن، چاقی هستید یا وزن شما نرمال می باشد.',
+                                'شاخص چربی بدن (RFM) مقیاسی است که به شما میزان چربی بدنتون بصورت تقریبی نمایش میده و شما رو از سطح چربی بدنتون مطلع میکنه.',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 17,
@@ -96,49 +99,83 @@ class _BmiScreensState extends State<BmiScreens> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Radio(
+                                  value: 1,
+                                  groupValue: _value,
+                                  onChanged: (value) {
+                                    _value = int.parse(value.toString());
+                                    setState(() {});
+                                  },
+                                  activeColor: Colors.yellowAccent,
+                                ),
+                                const Text(
+                                  'زن',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18),
+                                ),
+                                Radio(
+                                  value: 2,
+                                  groupValue: _value,
+                                  onChanged: (value) {
+                                    _value = int.parse(value.toString());
+                                    setState(() {});
+                                  },
+                                  activeColor: Colors.yellowAccent,
+                                ),
+                                const Text(
+                                  'مرد',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 18),
+                                ),
+                              ],
+                            ),
                             BmiTextFields(
-                              controller: weightController,
-                              hintText: 'وزن',
-                              edgeInsets: EdgeInsets.symmetric(
-                                  horizontal: size.width * 0.1),
+                              hintText: 'قد (برحسب سانتی متر)',
+                              controller: heightController,
                               textInputAction: TextInputAction.next,
+                              edgeInsets: EdgeInsets.symmetric(
+                                  horizontal: size.width * 0.1,
+                                  vertical: size.height * 0.02),
                             ),
                             BmiTextFields(
                               onSubmitted: (value) {
-                                if (weightController.text.isNotEmpty &&
-                                    heightController.text.isNotEmpty) {
-                                  bmi.calculateBmi(
-                                      weight:
-                                          double.parse(weightController.text),
+                                if (heightController.text.isNotEmpty &&
+                                    waistController.text.isNotEmpty) {
+                                  rfm.calculateRfm(
                                       height:
-                                          double.parse(heightController.text));
+                                          double.parse(heightController.text),
+                                      waist: double.parse(waistController.text),
+                                      gender: _value);
                                   _calOpacity = 1;
-                                  FocusScope.of(context)
-                                      .requestFocus(FocusNode());
                                   setState(() {});
                                 }
+                                FocusScope.of(context)
+                                    .requestFocus(FocusNode());
                               },
-                              controller: heightController,
-                              hintText: 'قد (برحسب متر)',
+                              hintText: 'دور کمر',
+                              controller: waistController,
+                              textInputAction: TextInputAction.next,
                               edgeInsets: EdgeInsets.symmetric(
                                   horizontal: size.width * 0.1,
-                                  vertical: size.height * 0.07),
+                                  vertical: size.height * 0.05),
                             ),
                             TimerButton(
                               onPress: () {
-                                if (weightController.text.isNotEmpty &&
-                                    heightController.text.isNotEmpty) {
-                                  bmi.calculateBmi(
-                                      weight:
-                                      double.parse(weightController.text),
+                                if (heightController.text.isNotEmpty &&
+                                    waistController.text.isNotEmpty) {
+                                  rfm.calculateRfm(
                                       height:
-                                      double.parse(heightController.text));
+                                          double.parse(heightController.text),
+                                      waist: double.parse(waistController.text),
+                                      gender: _value);
                                   _calOpacity = 1;
-                                  FocusScope.of(context)
-                                      .requestFocus(FocusNode());
                                   setState(() {});
                                 }
                               },
+                              size: size,
                               child: const Text(
                                 'محاسبه',
                                 style: TextStyle(
@@ -147,17 +184,13 @@ class _BmiScreensState extends State<BmiScreens> {
                                     fontSize: 20),
                               ),
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.yellowAccent,
-                                elevation: 5,
-                              ),
-                              size: size,
+                                  primary: Colors.yellowAccent, elevation: 5),
                             ),
                             Container(
-                              margin: EdgeInsets.only(top: size.height * 0.02),
                               padding: EdgeInsets.only(top: size.height * 0.05),
                               width: size.width,
                               height: size.height * 0.2,
-                              child: bmi.bmiResult.isNotEmpty
+                              child: rfm.rfmResult.isNotEmpty
                                   ? AnimatedOpacity(
                                       duration:
                                           const Duration(milliseconds: 500),
@@ -165,14 +198,14 @@ class _BmiScreensState extends State<BmiScreens> {
                                       child: Column(
                                         children: [
                                           Text(
-                                            'شاخص حجم بدن شما :  ${bmi.bmiResult}% می باشد',
+                                            'درصد چربی بدن شما ${rfm.rfmResult}% می باشد ',
                                             style: const TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 18),
                                           ),
                                           Text(
-                                            bmi.bmiMessage,
+                                            rfm.rfmMessage,
                                             style: const TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold,
@@ -186,7 +219,7 @@ class _BmiScreensState extends State<BmiScreens> {
                           ],
                         ),
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),
@@ -202,6 +235,6 @@ class _BmiScreensState extends State<BmiScreens> {
     // TODO: implement dispose
     super.dispose();
     heightController.dispose();
-    weightController.dispose();
+    waistController.dispose();
   }
 }

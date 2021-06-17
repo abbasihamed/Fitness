@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:timer/screens/bmi_page.dart';
+import 'package:timer/screens/rfm_page.dart';
 import 'package:timer/screens/stopwatch_item.dart';
 import 'package:timer/screens/timer_item.dart';
 
@@ -81,16 +82,25 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Container(
-                    alignment: Alignment.center,
-                    decoration: const BoxDecoration(
-                      color: Colors.black54,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Text(
-                      'BMI',
-                      style: GoogleFonts.oswald(
-                          color: Colors.white70, fontSize: 40),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const RFMScreen(),
+                          ));
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      decoration: const BoxDecoration(
+                        color: Colors.black54,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Text(
+                        'RFM',
+                        style: GoogleFonts.oswald(
+                            color: Colors.white70, fontSize: 40),
+                      ),
                     ),
                   ),
                   GestureDetector(
@@ -98,7 +108,7 @@ class HomeScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => BmiScreens()));
+                              builder: (context) => const BmiScreens()));
                     },
                     child: Container(
                       alignment: Alignment.center,
